@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2Krushal Cuts — Gainesville's Premier Barbershop</title>
     <meta name="description" content="Precision fades, sharp lineups, and a vibe that keeps you coming back. Book your cut at 2Krushal Cuts in Gainesville, FL.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0B0B'/><text x='50' y='55' text-anchor='middle' dominant-baseline='middle' font-size='60' fill='%23C9A96E' font-family='serif' font-weight='bold'>2K</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
@@ -39,6 +40,8 @@
         a { color: inherit; text-decoration: none; }
         img { max-width: 100%; display: block; }
 
+        section[id] { scroll-margin-top: 80px; }
+
         /* ===== UTILITY ===== */
         .container {
             max-width: 1140px;
@@ -66,6 +69,57 @@
 
         section {
             padding: 100px 0;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            animation: autoHideLoader 0s 3.5s forwards;
+        }
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-content {
+            text-align: center;
+        }
+        .loader-logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+        .loader-logo span { color: var(--gold); }
+        .loader-bar {
+            width: 120px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .loader-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--gold);
+            border-radius: 2px;
+            animation: loaderFill 1.2s ease forwards;
+        }
+        @keyframes loaderFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        @keyframes autoHideLoader {
+            to { opacity: 0; visibility: hidden; pointer-events: none; }
         }
 
         /* ===== REVEAL ANIMATION ===== */
@@ -393,6 +447,222 @@
             line-height: 1.6;
         }
 
+        /* ===== GALLERY ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: border-color 0.4s ease;
+        }
+        .gallery-item:hover {
+            border-color: rgba(201, 169, 110, 0.3);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(11, 11, 11, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .gallery-zoom {
+            font-size: 2rem;
+            color: var(--gold);
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.8);
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .gallery-item:hover .gallery-zoom {
+            transform: scale(1);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: var(--radius);
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+        }
+        .lightbox.active .lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+        .lightbox-close:hover { color: var(--gold); }
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease, color 0.3s ease;
+            z-index: 10;
+        }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            background: rgba(201, 169, 110, 0.15);
+            color: var(--gold);
+        }
+
+        /* ===== BEFORE & AFTER ===== */
+        .ba-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .ba-card {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ba-slider {
+            position: relative;
+            aspect-ratio: 3 / 2;
+            overflow: hidden;
+            cursor: ew-resize;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .ba-before,
+        .ba-after {
+            position: absolute;
+            inset: 0;
+        }
+        .ba-before img,
+        .ba-after img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .ba-before {
+            clip-path: inset(0 50% 0 0);
+            z-index: 2;
+        }
+        .ba-label {
+            position: absolute;
+            bottom: 12px;
+            padding: 4px 12px;
+            background: rgba(11, 11, 11, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text);
+            z-index: 5;
+        }
+        .ba-label-before { left: 12px; }
+        .ba-label-after { right: 12px; z-index: 1; }
+        .ba-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .ba-handle-line {
+            flex: 1;
+            width: 2px;
+            background: var(--gold);
+        }
+        .ba-handle-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
         /* ===== BARBERS ===== */
         .barbers-grid {
             display: grid;
@@ -414,26 +684,17 @@
         .barber-photo {
             width: 100%;
             aspect-ratio: 3 / 3.5;
-            background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(201, 169, 110, 0.02));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            overflow: hidden;
             position: relative;
         }
-        .barber-initials {
-            font-family: var(--font-heading);
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--gold);
-            opacity: 0.3;
+        .barber-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
-        .barber-photo-label {
-            font-size: 0.72rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--muted);
+        .barber-card:hover .barber-photo img {
+            transform: scale(1.05);
         }
         .barber-info {
             padding: 24px;
@@ -520,6 +781,49 @@
             font-size: 0.72rem;
             color: var(--muted);
             letter-spacing: 0.5px;
+        }
+
+        /* ===== SOCIAL / FACEBOOK CTA ===== */
+        .social-cta {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .social-cta-inner {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .social-cta-icon {
+            color: var(--gold);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        .social-cta-text {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+        .btn-social {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: #1877F2;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-social:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
+            background: #166fe5;
         }
 
         /* ===== CTA BANNER ===== */
@@ -622,6 +926,29 @@
             filter: invert(0.92) hue-rotate(180deg) brightness(0.7) contrast(1.1) saturate(0.3);
         }
 
+        /* ===== PARALLAX BACKGROUNDS ===== */
+        .parallax-section {
+            position: relative;
+            overflow: hidden;
+        }
+        .parallax-section::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            right: -10%;
+            bottom: -20%;
+            background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+            will-change: transform;
+            z-index: 0;
+            transform: translateY(var(--parallax-y, 0));
+        }
+        .parallax-section > .container {
+            position: relative;
+            z-index: 1;
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             border-top: 1px solid rgba(255,255,255,0.06);
@@ -654,6 +981,16 @@
             .reviews-grid {
                 grid-template-columns: 1fr;
             }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ba-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 48px;
+            }
             .findus-grid {
                 grid-template-columns: 1fr;
             }
@@ -671,6 +1008,19 @@
 
             .scroll-indicator { bottom: 24px; }
 
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .lightbox-prev,
+            .lightbox-next {
+                width: 36px;
+                height: 36px;
+                font-size: 1.5rem;
+            }
+            .lightbox-prev { left: 12px; }
+            .lightbox-next { right: 12px; }
+
             .footer .container {
                 flex-direction: column;
                 gap: 16px;
@@ -681,6 +1031,16 @@
 </head>
 <body>
 
+    <!-- ===== LOADING SCREEN ===== -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">2KRUSHAL <span>CUTS</span></div>
+            <div class="loader-bar">
+                <div class="loader-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -688,6 +1048,7 @@
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#barbers">Barbers</a></li>
                 <li><a href="#reviews">Reviews</a></li>
                 <li><a href="#findus">Find Us</a></li>
@@ -703,6 +1064,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <a href="#about" class="mobile-link">About</a>
         <a href="#services" class="mobile-link">Services</a>
+        <a href="#gallery" class="mobile-link">Gallery</a>
         <a href="#barbers" class="mobile-link">Barbers</a>
         <a href="#reviews" class="mobile-link">Reviews</a>
         <a href="#findus" class="mobile-link">Find Us</a>
@@ -745,42 +1107,42 @@
                 <h2 class="section-heading">Services &amp; Pricing</h2>
             </div>
             <div class="services-grid">
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="0">
                     <div class="service-header">
                         <span class="service-name">Precision Haircut</span>
                         <span class="service-price">$35</span>
                     </div>
                     <p class="service-desc">Expert fade, taper, or scissor cut tailored to your style. Includes consultation and styled finish.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="1">
                     <div class="service-header">
                         <span class="service-name">Haircut + Beard</span>
                         <span class="service-price">$50</span>
                     </div>
                     <p class="service-desc">Full haircut paired with a detailed beard trim, shape-up, and hot towel finish.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="2">
                     <div class="service-header">
                         <span class="service-name">Beard Trim &amp; Shape</span>
                         <span class="service-price">$20</span>
                     </div>
                     <p class="service-desc">Clean lines and sculpted edges. Includes razor detailing and conditioning.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="3">
                     <div class="service-header">
                         <span class="service-name">Kids Cut</span>
                         <span class="service-price">$25</span>
                     </div>
                     <p class="service-desc">Patient, friendly service for the little ones. Same precision, smaller package.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="4">
                     <div class="service-header">
                         <span class="service-name">Lineup / Edge Up</span>
                         <span class="service-price">$15</span>
                     </div>
                     <p class="service-desc">Quick razor-sharp cleanup around the hairline, temples, and neckline.</p>
                 </div>
-                <div class="service-card reveal">
+                <div class="service-card reveal" data-delay="5">
                     <div class="service-header">
                         <span class="service-name">Razor Shave</span>
                         <span class="service-price">$30</span>
@@ -791,18 +1153,116 @@
         </div>
     </section>
 
+    <!-- ===== GALLERY ===== -->
+    <section id="gallery" class="parallax-section">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">OUR WORK</div>
+                <h2 class="section-heading">The Portfolio</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item reveal" data-delay="0">
+                    <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&h=600&fit=crop" alt="Precision fade haircut" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+                <div class="gallery-item reveal" data-delay="1">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=600&fit=crop" alt="Barber working on fade" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+                <div class="gallery-item reveal" data-delay="2">
+                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=600&fit=crop" alt="Clean lineup" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+                <div class="gallery-item reveal" data-delay="3">
+                    <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=600&fit=crop" alt="Beard trim detail" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+                <div class="gallery-item reveal" data-delay="4">
+                    <img src="https://images.unsplash.com/photo-1585747860019-8c8a54e6b8e8?w=600&h=600&fit=crop" alt="Fresh cut result" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+                <div class="gallery-item reveal" data-delay="5">
+                    <img src="https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=600&h=600&fit=crop" alt="Barbershop detail" loading="lazy">
+                    <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BEFORE & AFTER ===== -->
+    <section id="transformations" class="parallax-section">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">TRANSFORMATIONS</div>
+                <h2 class="section-heading">Before &amp; After</h2>
+            </div>
+            <div class="ba-grid">
+                <div class="ba-card reveal" data-delay="0">
+                    <div class="ba-slider" data-ba-slider>
+                        <div class="ba-after">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop" alt="After haircut" loading="lazy">
+                            <span class="ba-label ba-label-after">After</span>
+                        </div>
+                        <div class="ba-before">
+                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=600&h=400&fit=crop" alt="Before haircut" loading="lazy">
+                            <span class="ba-label ba-label-before">Before</span>
+                        </div>
+                        <div class="ba-handle">
+                            <div class="ba-handle-line"></div>
+                            <div class="ba-handle-circle"><span>&#8596;</span></div>
+                            <div class="ba-handle-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ba-card reveal" data-delay="1">
+                    <div class="ba-slider" data-ba-slider>
+                        <div class="ba-after">
+                            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=400&fit=crop" alt="After haircut" loading="lazy">
+                            <span class="ba-label ba-label-after">After</span>
+                        </div>
+                        <div class="ba-before">
+                            <img src="https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?w=600&h=400&fit=crop" alt="Before haircut" loading="lazy">
+                            <span class="ba-label ba-label-before">Before</span>
+                        </div>
+                        <div class="ba-handle">
+                            <div class="ba-handle-line"></div>
+                            <div class="ba-handle-circle"><span>&#8596;</span></div>
+                            <div class="ba-handle-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ba-card reveal" data-delay="2">
+                    <div class="ba-slider" data-ba-slider>
+                        <div class="ba-after">
+                            <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=400&fit=crop" alt="After beard trim" loading="lazy">
+                            <span class="ba-label ba-label-after">After</span>
+                        </div>
+                        <div class="ba-before">
+                            <img src="https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=600&h=400&fit=crop" alt="Before beard trim" loading="lazy">
+                            <span class="ba-label ba-label-before">Before</span>
+                        </div>
+                        <div class="ba-handle">
+                            <div class="ba-handle-line"></div>
+                            <div class="ba-handle-circle"><span>&#8596;</span></div>
+                            <div class="ba-handle-line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ===== BARBERS ===== -->
-    <section id="barbers">
+    <section id="barbers" class="parallax-section">
         <div class="container">
             <div class="reveal" style="text-align:center;">
                 <div class="section-label">THE TEAM</div>
                 <h2 class="section-heading">Meet Your Barbers</h2>
             </div>
             <div class="barbers-grid">
-                <div class="barber-card reveal">
+                <div class="barber-card reveal" data-delay="0">
                     <div class="barber-photo">
-                        <span class="barber-initials">BX</span>
-                        <span class="barber-photo-label">Photo coming soon</span>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=580&fit=crop&crop=face" alt="Bax — Lead Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Bax</h3>
@@ -810,10 +1270,9 @@
                         <p class="barber-specialty">Known for artistic flair and razor-sharp fades. Sets the standard for every chair in the shop.</p>
                     </div>
                 </div>
-                <div class="barber-card reveal">
+                <div class="barber-card reveal" data-delay="1">
                     <div class="barber-photo">
-                        <span class="barber-initials">BR</span>
-                        <span class="barber-photo-label">Photo coming soon</span>
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=580&fit=crop&crop=face" alt="Bryan — Senior Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Bryan</h3>
@@ -821,10 +1280,9 @@
                         <p class="barber-specialty">Precision is in his DNA. Consistently delivers clean, detailed cuts that clients rave about.</p>
                     </div>
                 </div>
-                <div class="barber-card reveal">
+                <div class="barber-card reveal" data-delay="2">
                     <div class="barber-photo">
-                        <span class="barber-initials">JY</span>
-                        <span class="barber-photo-label">Photo coming soon</span>
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=580&fit=crop&crop=face" alt="Joey — Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Joey</h3>
@@ -848,7 +1306,7 @@
                 </div>
             </div>
             <div class="reviews-grid">
-                <div class="review-card reveal">
+                <div class="review-card reveal" data-delay="0">
                     <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     <p class="review-text">"This is the best barber shop in Gainesville. He expertly fades and styles my son's hair every single time. The attention to detail is unmatched — wouldn't trust anyone else."</p>
                     <div class="review-meta">
@@ -856,7 +1314,7 @@
                         <span class="review-source">Google Review</span>
                     </div>
                 </div>
-                <div class="review-card reveal">
+                <div class="review-card reveal" data-delay="1">
                     <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     <p class="review-text">"From the moment I stepped in, I knew I was in for a treat. The ambiance was a perfect blend of classic and modern. My cut was exactly what I asked for and then some."</p>
                     <div class="review-meta">
@@ -864,7 +1322,7 @@
                         <span class="review-source">Google Review</span>
                     </div>
                 </div>
-                <div class="review-card reveal">
+                <div class="review-card reveal" data-delay="2">
                     <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     <p class="review-text">"Good vibe, great cut. Gives honest opinions and suggestions on what would look best. Left feeling confident and looking sharp. Already booked my next appointment."</p>
                     <div class="review-meta">
@@ -872,6 +1330,28 @@
                         <span class="review-source">Google Review</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOCIAL / FACEBOOK CTA ===== -->
+    <section class="social-cta" id="social">
+        <div class="container reveal">
+            <div class="social-cta-inner">
+                <div class="social-cta-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 17.9895 4.38823 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9166 4.6875 14.6576 4.6875C15.9701 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.34 7.875 13.875 8.80008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="section-label">STAY CONNECTED</div>
+                <h2 class="section-heading">Follow Us on Facebook</h2>
+                <p class="social-cta-text">Stay updated on flash deals, new styles, shop updates, and behind-the-scenes content. Join the 2Krushal Cuts community.</p>
+                <a href="https://www.facebook.com/profile.php?id=100057584498498" target="_blank" rel="noopener" class="btn-social">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                        <path d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 17.9895 4.38823 22.954 10.125 23.8542V15.4688H7.07812V12H10.125V9.35625C10.125 6.34875 11.9166 4.6875 14.6576 4.6875C15.9701 4.6875 17.3438 4.92188 17.3438 4.92188V7.875H15.8306C14.34 7.875 13.875 8.80008 13.875 9.75V12H17.2031L16.6711 15.4688H13.875V23.8542C19.6118 22.954 24 17.9895 24 12Z" fill="currentColor"/>
+                    </svg>
+                    Follow on Facebook
+                </a>
             </div>
         </div>
     </section>
@@ -933,14 +1413,30 @@
         <div class="container">
             <span class="footer-copy">&copy; 2026 2Krushal Cuts. All rights reserved.</span>
             <div class="footer-links">
+                <a href="https://www.facebook.com/profile.php?id=100057584498498" target="_blank" rel="noopener">Facebook</a>
                 <a href="https://instagram.com/2krushalcuts" target="_blank" rel="noopener">Instagram</a>
                 <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener">Booksy</a>
             </div>
         </div>
     </footer>
 
+    <!-- ===== LIGHTBOX ===== -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">&times;</button>
+        <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
+        <button class="lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    </div>
+
     <!-- ===== JS ===== -->
     <script>
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1400);
+        });
+
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -966,11 +1462,15 @@
             });
         });
 
-        // Scroll reveal (IntersectionObserver)
+        // Scroll reveal with staggered delays
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    const delay = entry.target.dataset.delay;
+                    if (delay !== undefined) {
+                        entry.target.style.transitionDelay = (parseInt(delay) * 0.1) + 's';
+                    }
                     entry.target.classList.add('visible');
                     observer.unobserve(entry.target);
                 }
@@ -978,6 +1478,113 @@
         }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
         revealElements.forEach(el => observer.observe(el));
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        let currentIndex = 0;
+
+        function getFullSizeUrl(thumbUrl) {
+            return thumbUrl.replace(/w=\d+/, 'w=1200').replace(/&h=\d+/, '');
+        }
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentIndex = index;
+                const img = item.querySelector('img');
+                lightboxImg.src = getFullSizeUrl(img.src);
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        document.getElementById('lightboxPrev').addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            const img = galleryItems[currentIndex].querySelector('img');
+            lightboxImg.src = getFullSizeUrl(img.src);
+            lightboxImg.alt = img.alt;
+        });
+
+        document.getElementById('lightboxNext').addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % galleryItems.length;
+            const img = galleryItems[currentIndex].querySelector('img');
+            lightboxImg.src = getFullSizeUrl(img.src);
+            lightboxImg.alt = img.alt;
+        });
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
+            if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
+        });
+
+        // Before & After sliders
+        document.querySelectorAll('[data-ba-slider]').forEach(slider => {
+            const before = slider.querySelector('.ba-before');
+            const handle = slider.querySelector('.ba-handle');
+            let isDragging = false;
+
+            function updateSlider(x) {
+                const rect = slider.getBoundingClientRect();
+                let percent = ((x - rect.left) / rect.width) * 100;
+                percent = Math.max(5, Math.min(95, percent));
+                before.style.clipPath = 'inset(0 ' + (100 - percent) + '% 0 0)';
+                handle.style.left = percent + '%';
+            }
+
+            slider.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                updateSlider(e.clientX);
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.clientX);
+            });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            slider.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                updateSlider(e.touches[0].clientX);
+            }, { passive: true });
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.touches[0].clientX);
+            }, { passive: true });
+            window.addEventListener('touchend', () => { isDragging = false; });
+        });
+
+        // Subtle parallax on marked sections
+        const parallaxSections = document.querySelectorAll('.parallax-section');
+        window.addEventListener('scroll', () => {
+            parallaxSections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const sectionCenter = rect.top + rect.height / 2;
+                const viewportCenter = window.innerHeight / 2;
+                const offset = (sectionCenter - viewportCenter) * 0.04;
+                section.style.setProperty('--parallax-y', offset + 'px');
+            });
+        }, { passive: true });
     </script>
 </body>
 </html>
