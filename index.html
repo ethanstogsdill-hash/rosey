@@ -810,23 +810,86 @@
             font-size: 1rem;
             line-height: 1.7;
         }
-        .booking-widget-area {
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+        .booking-card {
+            background: var(--card);
+            border: 1px solid rgba(201, 169, 110, 0.12);
+            border-radius: 16px;
+            padding: 32px 20px;
+            text-align: center;
+            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        .booking-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(201, 169, 110, 0.12);
+        }
+        .booking-card-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
             display: flex;
+            align-items: center;
             justify-content: center;
-            margin-top: 32px;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, rgba(201, 169, 110, 0.15), rgba(201, 169, 110, 0.05));
+            border: 1px solid rgba(201, 169, 110, 0.2);
         }
-        .booksy-widget-container-dialog {
-            background-image: none !important;
+        .booking-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 4px;
         }
-        .booksy-widget-container-dialog .booksy-business-link {
-            background-image: none !important;
+        .booking-card .booking-card-role {
+            font-size: 0.78rem;
+            color: var(--gold);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
-        .booking-fallback {
-            display: none;
-            margin-top: 24px;
+        .booking-card .btn-book-barber {
+            display: inline-block;
+            padding: 10px 28px;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
         }
-        .booking-fallback.show {
-            display: block;
+        .booking-card .btn-book-barber:hover {
+            background: var(--gold);
+            color: var(--bg);
+        }
+        .booking-main-cta {
+            text-align: center;
+            margin-top: 8px;
+        }
+        .booking-main-cta .btn-book {
+            font-size: 1.05rem;
+            padding: 16px 48px;
+        }
+        .booking-or {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 700px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+                max-width: 340px;
+            }
         }
 
         /* ===== SOCIAL / FACEBOOK CTA ===== */
@@ -1444,17 +1507,32 @@
                 <h2 class="section-heading">Ready to Look <em style="font-style:italic;color:var(--gold);">Krushal?</em></h2>
             </div>
             <div class="booking-intro reveal">
-                <p>Walk-ins welcome. Appointments recommended for guaranteed seating. Select your barber, pick a time, and lock in your spot — all right here.</p>
+                <p>Walk-ins welcome. Appointments recommended for guaranteed seating. Pick your barber and lock in your spot on Booksy.</p>
             </div>
-            <div class="booking-widget-area reveal">
-                <!-- Booksy booking widget — loads the interactive booking flow directly on the page -->
-                <script type="text/javascript" src="https://booksy.com/widget/code.js?id=1131515&country=us&lang=en"></script>
-            </div>
-            <noscript>
-                <div style="text-align:center;margin-top:32px;">
-                    <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book on Booksy</a>
+            <div class="booking-grid">
+                <div class="booking-card reveal" data-delay="0">
+                    <div class="booking-card-icon">&#9986;</div>
+                    <h3>Bax</h3>
+                    <div class="booking-card-role">Lead Barber</div>
+                    <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book-barber">Book with Bax</a>
                 </div>
-            </noscript>
+                <div class="booking-card reveal" data-delay="1">
+                    <div class="booking-card-icon">&#9986;</div>
+                    <h3>Bryan</h3>
+                    <div class="booking-card-role">Senior Barber</div>
+                    <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book-barber">Book with Bryan</a>
+                </div>
+                <div class="booking-card reveal" data-delay="2">
+                    <div class="booking-card-icon">&#9986;</div>
+                    <h3>Joey</h3>
+                    <div class="booking-card-role">Barber</div>
+                    <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book-barber">Book with Joey</a>
+                </div>
+            </div>
+            <div class="booking-main-cta reveal">
+                <div class="booking-or">OR BOOK ANY AVAILABLE BARBER</div>
+                <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book on Booksy</a>
+            </div>
         </div>
     </section>
 
