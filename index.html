@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Krushal Cuts — Gainesville's Premier Barbershop</title>
+    <meta name="description" content="Precision fades, sharp lineups, and a vibe that keeps you coming back. Book your cut at 2Krushal Cuts in Gainesville, FL.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0B0B0B;
+            --card: #111111;
+            --text: #F2F0EB;
+            --muted: #807E78;
+            --gold: #C9A96E;
+            --gold-dim: rgba(201, 169, 110, 0.15);
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-body: 'Outfit', -apple-system, sans-serif;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ===== UTILITY ===== */
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .section-heading {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        /* ===== REVEAL ANIMATION ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: background 0.35s ease, padding 0.35s ease, backdrop-filter 0.35s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(11, 11, 11, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .nav-logo span { color: var(--gold); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        .btn-book {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: var(--gold);
+            color: var(--bg);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 169, 110, 0.3);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 1100;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 11, 11, 0.97);
+            backdrop-filter: blur(20px);
+            z-index: 1050;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+        .mobile-menu.open {
+            display: flex;
+            opacity: 1;
+        }
+        .mobile-menu a {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+        .mobile-menu a:hover { color: var(--gold); }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            max-width: 700px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: rgba(201, 169, 110, 0.1);
+            border: 1px solid rgba(201, 169, 110, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--gold);
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.4s;
+        }
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border: 1px solid rgba(242, 240, 235, 0.2);
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            background: rgba(201, 169, 110, 0.05);
+        }
+        .btn-gold {
+            padding: 12px 28px;
+            font-size: 0.9rem;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 1.2s;
+        }
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: pulse-line 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-line {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        /* ===== THE VIBE (ABOUT) ===== */
+        .about {
+            text-align: center;
+        }
+        .about-text {
+            max-width: 620px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .about-text strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* ===== SERVICES ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+        .service-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(201, 169, 110, 0.2);
+        }
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .service-name {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+        .service-price {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+        .service-desc {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ===== BARBERS ===== */
+        .barbers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .barber-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .barber-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(201, 169, 110, 0.2);
+        }
+        .barber-photo {
+            width: 100%;
+            aspect-ratio: 3 / 3.5;
+            background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(201, 169, 110, 0.02));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+        }
+        .barber-initials {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            opacity: 0.3;
+        }
+        .barber-photo-label {
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .barber-info {
+            padding: 24px;
+        }
+        .barber-name {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .barber-role {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .barber-specialty {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ===== REVIEWS ===== */
+        .reviews { text-align: center; }
+        .reviews-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+        .stars {
+            color: var(--gold);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .rating-text {
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            text-align: left;
+        }
+        .review-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+        .review-stars {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+        .review-text {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text);
+            flex: 1;
+            margin-bottom: 20px;
+        }
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .review-author {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .review-source {
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== CTA BANNER ===== */
+        .cta-banner {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0;
+        }
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(201, 169, 110, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .cta-banner .container { position: relative; }
+        .cta-banner h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .cta-banner h2 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+        .cta-banner p {
+            color: var(--muted);
+            font-size: 1rem;
+            margin-bottom: 32px;
+        }
+
+        /* ===== FIND US ===== */
+        .findus-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px;
+            align-items: start;
+        }
+        .findus-info-block {
+            margin-bottom: 28px;
+        }
+        .findus-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .findus-value {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .findus-value a {
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+        .findus-value a:hover { color: var(--gold); }
+
+        .btn-directions {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: transparent;
+            border: 1px solid rgba(242, 240, 235, 0.2);
+            border-radius: 50px;
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        .btn-directions:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .map-wrapper {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            aspect-ratio: 4 / 3;
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: invert(0.92) hue-rotate(180deg) brightness(0.7) contrast(1.1) saturate(0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 32px 0;
+        }
+        .footer .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .footer-copy {
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .services-grid,
+            .barbers-grid,
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            .findus-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            section { padding: 72px 0; }
+
+            .hero { padding: 100px 20px 60px; }
+            .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+            .hero-sub { font-size: 0.95rem; }
+
+            .scroll-indicator { bottom: 24px; }
+
+            .footer .container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo">2KRUSHAL <span>CUTS</span></a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#barbers">Barbers</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#findus">Find Us</a></li>
+                <li><a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book">Book Now</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#barbers" class="mobile-link">Barbers</a>
+        <a href="#reviews" class="mobile-link">Reviews</a>
+        <a href="#findus" class="mobile-link">Find Us</a>
+        <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book" style="margin-top:12px;">Book Now</a>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">&#9733; 4.8 Stars &middot; 330+ Google Reviews</div>
+            <h1>Where Every Cut Is a <em>Masterpiece</em></h1>
+            <p class="hero-sub">Gainesville's detail-driven barbershop. Precision fades, sharp lineups, and a vibe that keeps you coming back.</p>
+            <div class="hero-ctas">
+                <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book Your Cut</a>
+                <a href="#services" class="btn-outline">View Services</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ===== THE VIBE (ABOUT) ===== -->
+    <section class="about" id="about">
+        <div class="container reveal">
+            <div class="section-label">THE VIBE</div>
+            <h2 class="section-heading">Artistry Meets Precision</h2>
+            <p class="about-text">
+                At 2Krushal Cuts, every visit is more than a haircut — it's an experience built on <strong>attention to detail</strong> and a genuine love for the craft. Our barbers treat every fade, lineup, and beard sculpt like a work of art. We've built a space where <strong>classic barbershop culture meets modern style</strong>, and where you walk out looking and feeling your absolute best. Whether you're a regular or it's your first time in the chair, you'll feel the difference from the first cut.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">THE MENU</div>
+                <h2 class="section-heading">Services &amp; Pricing</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Precision Haircut</span>
+                        <span class="service-price">$35</span>
+                    </div>
+                    <p class="service-desc">Expert fade, taper, or scissor cut tailored to your style. Includes consultation and styled finish.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Haircut + Beard</span>
+                        <span class="service-price">$50</span>
+                    </div>
+                    <p class="service-desc">Full haircut paired with a detailed beard trim, shape-up, and hot towel finish.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Beard Trim &amp; Shape</span>
+                        <span class="service-price">$20</span>
+                    </div>
+                    <p class="service-desc">Clean lines and sculpted edges. Includes razor detailing and conditioning.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Kids Cut</span>
+                        <span class="service-price">$25</span>
+                    </div>
+                    <p class="service-desc">Patient, friendly service for the little ones. Same precision, smaller package.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Lineup / Edge Up</span>
+                        <span class="service-price">$15</span>
+                    </div>
+                    <p class="service-desc">Quick razor-sharp cleanup around the hairline, temples, and neckline.</p>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-header">
+                        <span class="service-name">Razor Shave</span>
+                        <span class="service-price">$30</span>
+                    </div>
+                    <p class="service-desc">Classic straight razor shave with hot lather, warm towels, and a smooth finish.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BARBERS ===== -->
+    <section id="barbers">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">THE TEAM</div>
+                <h2 class="section-heading">Meet Your Barbers</h2>
+            </div>
+            <div class="barbers-grid">
+                <div class="barber-card reveal">
+                    <div class="barber-photo">
+                        <span class="barber-initials">BX</span>
+                        <span class="barber-photo-label">Photo coming soon</span>
+                    </div>
+                    <div class="barber-info">
+                        <h3 class="barber-name">Bax</h3>
+                        <div class="barber-role">Lead Barber</div>
+                        <p class="barber-specialty">Known for artistic flair and razor-sharp fades. Sets the standard for every chair in the shop.</p>
+                    </div>
+                </div>
+                <div class="barber-card reveal">
+                    <div class="barber-photo">
+                        <span class="barber-initials">BR</span>
+                        <span class="barber-photo-label">Photo coming soon</span>
+                    </div>
+                    <div class="barber-info">
+                        <h3 class="barber-name">Bryan</h3>
+                        <div class="barber-role">Senior Barber</div>
+                        <p class="barber-specialty">Precision is in his DNA. Consistently delivers clean, detailed cuts that clients rave about.</p>
+                    </div>
+                </div>
+                <div class="barber-card reveal">
+                    <div class="barber-photo">
+                        <span class="barber-initials">JY</span>
+                        <span class="barber-photo-label">Photo coming soon</span>
+                    </div>
+                    <div class="barber-info">
+                        <h3 class="barber-name">Joey</h3>
+                        <div class="barber-role">Barber</div>
+                        <p class="barber-specialty">Master of classic and modern blends. Brings versatility and a sharp eye to every cut.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REVIEWS ===== -->
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <div class="reveal">
+                <div class="section-label">THE PEOPLE HAVE SPOKEN</div>
+                <h2 class="section-heading">What Clients Are Saying</h2>
+                <div class="reviews-rating">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span class="rating-text">4.8/5 &middot; 330+ Google Reviews</span>
+                </div>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card reveal">
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="review-text">"This is the best barber shop in Gainesville. He expertly fades and styles my son's hair every single time. The attention to detail is unmatched — wouldn't trust anyone else."</p>
+                    <div class="review-meta">
+                        <span class="review-author">Verified Client</span>
+                        <span class="review-source">Google Review</span>
+                    </div>
+                </div>
+                <div class="review-card reveal">
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="review-text">"From the moment I stepped in, I knew I was in for a treat. The ambiance was a perfect blend of classic and modern. My cut was exactly what I asked for and then some."</p>
+                    <div class="review-meta">
+                        <span class="review-author">Verified Client</span>
+                        <span class="review-source">Google Review</span>
+                    </div>
+                </div>
+                <div class="review-card reveal">
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="review-text">"Good vibe, great cut. Gives honest opinions and suggestions on what would look best. Left feeling confident and looking sharp. Already booked my next appointment."</p>
+                    <div class="review-meta">
+                        <span class="review-author">Verified Client</span>
+                        <span class="review-source">Google Review</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="cta-banner">
+        <div class="container reveal">
+            <h2>Ready to Look <em>Krushal?</em></h2>
+            <p>Walk-ins welcome. Appointments recommended for guaranteed seating.</p>
+            <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book Now</a>
+        </div>
+    </section>
+
+    <!-- ===== FIND US ===== -->
+    <section id="findus">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">FIND US</div>
+                <h2 class="section-heading">Come Through</h2>
+            </div>
+            <div class="findus-grid">
+                <div class="reveal">
+                    <div class="findus-info-block">
+                        <div class="findus-label">Location</div>
+                        <div class="findus-value">1606 NW 13th St<br>Gainesville, FL 32609</div>
+                    </div>
+                    <div class="findus-info-block">
+                        <div class="findus-label">Hours</div>
+                        <div class="findus-value">
+                            Tue – Fri: 9AM – 7PM<br>
+                            Sat: 9AM – 5PM<br>
+                            Sun – Mon: Closed
+                        </div>
+                    </div>
+                    <div class="findus-info-block">
+                        <div class="findus-label">Contact</div>
+                        <div class="findus-value">
+                            <a href="tel:+13522253242">(352) 225-3242</a><br>
+                            <a href="https://instagram.com/2krushalcuts" target="_blank" rel="noopener">@2krushalcuts</a>
+                        </div>
+                    </div>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=1606+NW+13th+St+Gainesville+FL+32609" target="_blank" rel="noopener" class="btn-directions">Get Directions &rarr;</a>
+                </div>
+                <div class="map-wrapper reveal">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3467.0!2d-82.339!3d29.662!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8a3!2s1606+NW+13th+St%2C+Gainesville%2C+FL+32609!5e0!3m2!1sen!2sus!4v1"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="2Krushal Cuts location on Google Maps">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <span class="footer-copy">&copy; 2026 2Krushal Cuts. All rights reserved.</span>
+            <div class="footer-links">
+                <a href="https://instagram.com/2krushalcuts" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener">Booksy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        }, { passive: true });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Scroll reveal (IntersectionObserver)
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
