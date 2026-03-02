@@ -783,6 +783,52 @@
             letter-spacing: 0.5px;
         }
 
+        /* ===== BOOKING SECTION ===== */
+        .booking-section {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .booking-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 169, 110, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .booking-section .container { position: relative; }
+        .booking-intro {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .booking-intro p {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .booking-widget-area {
+            display: flex;
+            justify-content: center;
+            margin-top: 32px;
+        }
+        .booksy-widget-container-dialog {
+            background-image: none !important;
+        }
+        .booksy-widget-container-dialog .booksy-business-link {
+            background-image: none !important;
+        }
+        .booking-fallback {
+            display: none;
+            margin-top: 24px;
+        }
+        .booking-fallback.show {
+            display: block;
+        }
+
         /* ===== SOCIAL / FACEBOOK CTA ===== */
         .social-cta {
             text-align: center;
@@ -824,6 +870,16 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
             background: #166fe5;
+        }
+        .fb-feed-wrapper {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .fb-feed-wrapper iframe {
+            border: none;
+            border-radius: var(--radius);
+            overflow: hidden;
         }
 
         /* ===== CTA BANNER ===== */
@@ -1052,7 +1108,7 @@
                 <li><a href="#barbers">Barbers</a></li>
                 <li><a href="#reviews">Reviews</a></li>
                 <li><a href="#findus">Find Us</a></li>
-                <li><a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book">Book Now</a></li>
+                <li><a href="#booking" class="btn-book">Book Now</a></li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -1068,7 +1124,7 @@
         <a href="#barbers" class="mobile-link">Barbers</a>
         <a href="#reviews" class="mobile-link">Reviews</a>
         <a href="#findus" class="mobile-link">Find Us</a>
-        <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book" style="margin-top:12px;">Book Now</a>
+        <a href="#booking" class="mobile-link btn-book" style="margin-top:12px;">Book Now</a>
     </div>
 
     <!-- ===== HERO ===== -->
@@ -1078,7 +1134,7 @@
             <h1>Where Every Cut Is a <em>Masterpiece</em></h1>
             <p class="hero-sub">Gainesville's detail-driven barbershop. Precision fades, sharp lineups, and a vibe that keeps you coming back.</p>
             <div class="hero-ctas">
-                <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book Your Cut</a>
+                <a href="#booking" class="btn-book btn-gold">Book Your Cut</a>
                 <a href="#services" class="btn-outline">View Services</a>
             </div>
         </div>
@@ -1160,29 +1216,32 @@
                 <div class="section-label">OUR WORK</div>
                 <h2 class="section-heading">The Portfolio</h2>
             </div>
+            <!-- To use your own photos: save images from your Facebook page into the images/ folder
+                 as gallery-1.jpg through gallery-6.jpg. The site will use them automatically.
+                 Until then, placeholder images from Unsplash are shown as fallbacks. -->
             <div class="gallery-grid">
                 <div class="gallery-item reveal" data-delay="0">
-                    <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&h=600&fit=crop" alt="Precision fade haircut" loading="lazy">
+                    <img src="images/gallery-1.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&h=600&fit=crop'" alt="Precision fade haircut" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
                 <div class="gallery-item reveal" data-delay="1">
-                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=600&fit=crop" alt="Barber working on fade" loading="lazy">
+                    <img src="images/gallery-2.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=600&fit=crop'" alt="Barber working on fade" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
                 <div class="gallery-item reveal" data-delay="2">
-                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=600&fit=crop" alt="Clean lineup" loading="lazy">
+                    <img src="images/gallery-3.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=600&fit=crop'" alt="Clean lineup" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
                 <div class="gallery-item reveal" data-delay="3">
-                    <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=600&fit=crop" alt="Beard trim detail" loading="lazy">
+                    <img src="images/gallery-4.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=600&fit=crop'" alt="Beard trim detail" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
                 <div class="gallery-item reveal" data-delay="4">
-                    <img src="https://images.unsplash.com/photo-1585747860019-8c8a54e6b8e8?w=600&h=600&fit=crop" alt="Fresh cut result" loading="lazy">
+                    <img src="images/gallery-5.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585747860019-8c8a54e6b8e8?w=600&h=600&fit=crop'" alt="Fresh cut result" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
                 <div class="gallery-item reveal" data-delay="5">
-                    <img src="https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=600&h=600&fit=crop" alt="Barbershop detail" loading="lazy">
+                    <img src="images/gallery-6.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=600&h=600&fit=crop'" alt="Barbershop detail" loading="lazy">
                     <div class="gallery-overlay"><span class="gallery-zoom">&#43;</span></div>
                 </div>
             </div>
@@ -1196,15 +1255,17 @@
                 <div class="section-label">TRANSFORMATIONS</div>
                 <h2 class="section-heading">Before &amp; After</h2>
             </div>
+            <!-- To use your own before/after photos: save into images/ as
+                 before-1.jpg, after-1.jpg, before-2.jpg, after-2.jpg, before-3.jpg, after-3.jpg -->
             <div class="ba-grid">
                 <div class="ba-card reveal" data-delay="0">
                     <div class="ba-slider" data-ba-slider>
                         <div class="ba-after">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop" alt="After haircut" loading="lazy">
+                            <img src="images/after-1.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop'" alt="After haircut" loading="lazy">
                             <span class="ba-label ba-label-after">After</span>
                         </div>
                         <div class="ba-before">
-                            <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=600&h=400&fit=crop" alt="Before haircut" loading="lazy">
+                            <img src="images/before-1.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=600&h=400&fit=crop'" alt="Before haircut" loading="lazy">
                             <span class="ba-label ba-label-before">Before</span>
                         </div>
                         <div class="ba-handle">
@@ -1217,11 +1278,11 @@
                 <div class="ba-card reveal" data-delay="1">
                     <div class="ba-slider" data-ba-slider>
                         <div class="ba-after">
-                            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=400&fit=crop" alt="After haircut" loading="lazy">
+                            <img src="images/after-2.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&h=400&fit=crop'" alt="After haircut" loading="lazy">
                             <span class="ba-label ba-label-after">After</span>
                         </div>
                         <div class="ba-before">
-                            <img src="https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?w=600&h=400&fit=crop" alt="Before haircut" loading="lazy">
+                            <img src="images/before-2.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?w=600&h=400&fit=crop'" alt="Before haircut" loading="lazy">
                             <span class="ba-label ba-label-before">Before</span>
                         </div>
                         <div class="ba-handle">
@@ -1234,11 +1295,11 @@
                 <div class="ba-card reveal" data-delay="2">
                     <div class="ba-slider" data-ba-slider>
                         <div class="ba-after">
-                            <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=400&fit=crop" alt="After beard trim" loading="lazy">
+                            <img src="images/after-3.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&h=400&fit=crop'" alt="After beard trim" loading="lazy">
                             <span class="ba-label ba-label-after">After</span>
                         </div>
                         <div class="ba-before">
-                            <img src="https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=600&h=400&fit=crop" alt="Before beard trim" loading="lazy">
+                            <img src="images/before-3.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=600&h=400&fit=crop'" alt="Before beard trim" loading="lazy">
                             <span class="ba-label ba-label-before">Before</span>
                         </div>
                         <div class="ba-handle">
@@ -1259,10 +1320,11 @@
                 <div class="section-label">THE TEAM</div>
                 <h2 class="section-heading">Meet Your Barbers</h2>
             </div>
+            <!-- To use real barber photos: save into images/ as bax.jpg, bryan.jpg, joey.jpg -->
             <div class="barbers-grid">
                 <div class="barber-card reveal" data-delay="0">
                     <div class="barber-photo">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=580&fit=crop&crop=face" alt="Bax — Lead Barber" loading="lazy">
+                        <img src="images/bax.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=580&fit=crop&crop=face'" alt="Bax — Lead Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Bax</h3>
@@ -1272,7 +1334,7 @@
                 </div>
                 <div class="barber-card reveal" data-delay="1">
                     <div class="barber-photo">
-                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=580&fit=crop&crop=face" alt="Bryan — Senior Barber" loading="lazy">
+                        <img src="images/bryan.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&h=580&fit=crop&crop=face'" alt="Bryan — Senior Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Bryan</h3>
@@ -1282,7 +1344,7 @@
                 </div>
                 <div class="barber-card reveal" data-delay="2">
                     <div class="barber-photo">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=580&fit=crop&crop=face" alt="Joey — Barber" loading="lazy">
+                        <img src="images/joey.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=580&fit=crop&crop=face'" alt="Joey — Barber" loading="lazy">
                     </div>
                     <div class="barber-info">
                         <h3 class="barber-name">Joey</h3>
@@ -1353,15 +1415,46 @@
                     Follow on Facebook
                 </a>
             </div>
+            <!-- Live Facebook Page feed — shows photos and posts from their Facebook page -->
+            <div class="fb-feed-wrapper">
+                <div id="fb-root"></div>
+                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v21.0"></script>
+                <div class="fb-page"
+                     data-href="https://www.facebook.com/profile.php?id=100057584498498"
+                     data-tabs="timeline"
+                     data-width="500"
+                     data-height="600"
+                     data-small-header="true"
+                     data-adapt-container-width="true"
+                     data-hide-cover="false"
+                     data-show-facepile="false">
+                    <blockquote cite="https://www.facebook.com/profile.php?id=100057584498498" class="fb-xfbml-parse-ignore">
+                        <a href="https://www.facebook.com/profile.php?id=100057584498498">2 Krushal Cuts</a>
+                    </blockquote>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- ===== CTA BANNER ===== -->
-    <section class="cta-banner">
-        <div class="container reveal">
-            <h2>Ready to Look <em>Krushal?</em></h2>
-            <p>Walk-ins welcome. Appointments recommended for guaranteed seating.</p>
-            <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book Now</a>
+    <!-- ===== BOOKING ===== -->
+    <section class="booking-section" id="booking">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label">BOOK YOUR CUT</div>
+                <h2 class="section-heading">Ready to Look <em style="font-style:italic;color:var(--gold);">Krushal?</em></h2>
+            </div>
+            <div class="booking-intro reveal">
+                <p>Walk-ins welcome. Appointments recommended for guaranteed seating. Select your barber, pick a time, and lock in your spot — all right here.</p>
+            </div>
+            <div class="booking-widget-area reveal">
+                <!-- Booksy booking widget — loads the interactive booking flow directly on the page -->
+                <script type="text/javascript" src="https://booksy.com/widget/code.js?id=1131515&country=us&lang=en"></script>
+            </div>
+            <noscript>
+                <div style="text-align:center;margin-top:32px;">
+                    <a href="https://booksy.com/en-us/1131515_2krushal-cuts_barber-shop_15596_gainesville" target="_blank" rel="noopener" class="btn-book btn-gold">Book on Booksy</a>
+                </div>
+            </noscript>
         </div>
     </section>
 
@@ -1486,6 +1579,9 @@
         let currentIndex = 0;
 
         function getFullSizeUrl(thumbUrl) {
+            // For local images, just use the same path (they're already full-size)
+            if (thumbUrl.includes('images/')) return thumbUrl;
+            // For Unsplash, request larger version
             return thumbUrl.replace(/w=\d+/, 'w=1200').replace(/&h=\d+/, '');
         }
 

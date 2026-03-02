@@ -1,0 +1,28 @@
+To replace the placeholder images with real photos from your Facebook page:
+
+1. Save photos from your Facebook page (https://www.facebook.com/profile.php?id=100057584498498)
+2. Name them according to this list and drop them in this folder:
+
+GALLERY (6 photos of your best work — fades, lineups, finished cuts):
+  gallery-1.jpg
+  gallery-2.jpg
+  gallery-3.jpg
+  gallery-4.jpg
+  gallery-5.jpg
+  gallery-6.jpg
+
+BEFORE & AFTER (3 pairs):
+  before-1.jpg  +  after-1.jpg
+  before-2.jpg  +  after-2.jpg
+  before-3.jpg  +  after-3.jpg
+
+BARBER PORTRAITS:
+  bax.jpg
+  bryan.jpg
+  joey.jpg
+
+Tips:
+- Photos should be at least 600x600px for gallery, 600x400px for before/after
+- Barber portraits work best around 500x580px (portrait orientation)
+- JPG format recommended for photos (smaller file size)
+- Until you add these files, the site automatically shows Unsplash placeholder images
