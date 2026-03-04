@@ -403,8 +403,10 @@
         .scroll-indicator {
             position: absolute;
             bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: fit-content;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -412,6 +414,7 @@
             opacity: 0;
             animation: fadeUp 0.8s ease forwards;
             animation-delay: 1.2s;
+            transition: opacity 0.4s ease;
         }
         .scroll-indicator span {
             font-size: 0.7rem;
@@ -1226,7 +1229,7 @@
             .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
             .hero-sub { font-size: 0.95rem; }
 
-            .scroll-indicator { bottom: 24px; left: 0; right: 0; transform: none; margin: 0 auto; }
+            .scroll-indicator { bottom: 24px; }
 
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1868,10 +1871,14 @@
             }, 1400);
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect + scroll indicator fade
         const navbar = document.getElementById('navbar');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 60);
+            if (scrollIndicator) {
+                scrollIndicator.style.opacity = Math.max(0, 1 - window.scrollY / 200);
+            }
         }, { passive: true });
 
         // Hamburger menu
