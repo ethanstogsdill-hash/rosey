@@ -43,14 +43,14 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-350 ${
           scrolled
-            ? "bg-[rgba(10,10,10,0.9)] backdrop-blur-[20px] py-3.5 border-b border-[rgba(255,255,255,0.04)]"
+            ? "bg-[rgba(11,11,11,0.85)] backdrop-blur-[20px] py-3.5 border-b border-[rgba(255,255,255,0.04)]"
             : "py-5"
         }`}
       >
         <div className="container flex items-center justify-between">
           <a
             href="#"
-            className="font-heading text-2xl tracking-wider uppercase"
+            className="font-heading text-xl font-bold tracking-wider"
           >
             AJ23 <span className="text-gold">BARBERSHOP</span>
           </a>
@@ -70,7 +70,7 @@ export default function Navbar() {
                 href={siteConfig.booksyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-2.5 bg-gold text-[#0A0A0A] text-[0.85rem] font-semibold rounded-full hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(212,175,55,0.3)] transition-all"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-gold text-[#1a1a1a] text-[0.85rem] font-semibold rounded-full hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(201,169,110,0.3)] transition-all"
               >
                 {t("nav-book", "Book Now")}
               </a>

@@ -8,11 +8,11 @@ export default function SocialCta() {
   const { t } = useLanguage();
 
   return (
-    <section id="social" className="text-center relative overflow-hidden section-padding">
+    <section id="social" className="text-center relative overflow-hidden py-[60px]">
       <div className="container">
         <ScrollReveal>
           <div className="max-w-[560px] mx-auto">
-            <div className="text-gold mb-6 opacity-80">
+            <div className="text-gold mb-5 opacity-80">
               <svg
                 width="48"
                 height="48"
@@ -27,13 +27,13 @@ export default function SocialCta() {
                 />
               </svg>
             </div>
-            <div className="text-xs font-semibold tracking-[3px] uppercase text-gold mb-5">
+            <div className="text-xs font-semibold tracking-[3px] uppercase text-gold mb-4">
               {t("social-label", "STAY CONNECTED")}
             </div>
-            <h2 className="font-heading text-[32px] md:text-[48px] uppercase leading-[1.05] mb-6">
+            <h2 className="font-heading text-[clamp(2rem,5vw,2.75rem)] font-semibold leading-[1.2] mb-6">
               {t("social-heading", "Follow Us on Instagram")}
             </h2>
-            <p className="text-muted-foreground text-[1.05rem] leading-[1.7] mb-10">
+            <p className="text-muted-foreground text-base leading-[1.7] mb-8">
               {t(
                 "social-text",
                 "Stay updated on fresh cuts, new styles, shop updates, and behind-the-scenes content. Join the AJ23 community."
@@ -43,7 +43,7 @@ export default function SocialCta() {
               href={siteConfig.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-10 py-4 bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F77737] text-white text-[1rem] font-semibold rounded-full hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(225,48,108,0.3)] transition-all"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#F77737] text-white text-[0.9rem] font-semibold rounded-full hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(225,48,108,0.3)] transition-all"
             >
               Follow on Instagram
             </a>
