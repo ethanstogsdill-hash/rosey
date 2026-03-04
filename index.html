@@ -411,10 +411,6 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards;
-            animation-delay: 1.2s;
-            transition: opacity 0.4s ease;
         }
         .scroll-indicator span {
             font-size: 0.7rem;
@@ -1315,7 +1311,7 @@
                 <a href="#services" class="btn-outline" data-i18n="hero-cta-services">View Services</a>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator" id="scroll-indicator">
             <span>Scroll</span>
             <div class="scroll-line"></div>
         </div>
@@ -1871,15 +1867,19 @@
             }, 1400);
         });
 
-        // Navbar scroll effect + scroll indicator fade
+        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
-        const scrollIndicator = document.querySelector('.scroll-indicator');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 60);
-            if (scrollIndicator) {
-                scrollIndicator.style.opacity = Math.max(0, 1 - window.scrollY / 200);
-            }
         }, { passive: true });
+
+        // Scroll indicator fade on scroll
+        window.addEventListener('scroll', function() {
+            const scrollIndicator = document.getElementById('scroll-indicator');
+            const scrollY = window.scrollY;
+            const opacity = Math.max(0, 1 - scrollY / 150);
+            scrollIndicator.style.opacity = opacity;
+        });
 
         // Hamburger menu
         const hamburger = document.getElementById('hamburger');
