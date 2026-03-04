@@ -19,9 +19,12 @@ Production website for AJ23 Barbershop (Gainesville, FL). Rebuilt from a static 
 - `npm run lint` — ESLint
 
 ## Design Tokens
-- Colors: bg `#0B0B0B`, card `#111111`, text `#F2F0EB`, muted `#807E78`, gold `#C9A96E`
-- Fonts: Playfair Display (headings), Outfit (body)
+- Colors: bg `#0A0A0A`, card `#141414`, text `#FFFFFF`, muted `#888888`, gold `#D4AF37`
+- Fonts: Bebas Neue (headings, uppercase), Outfit (body)
 - Dark theme only
+- Section spacing: 100px desktop, 64px mobile (`.section-padding` utility)
+- Border radius: 16px cards, 9999px buttons
+- Container max-width: 1200px
 
 ## Conventions
 - Use `next/image` for all images (not `<img>`)

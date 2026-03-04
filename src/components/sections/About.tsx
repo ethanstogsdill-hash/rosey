@@ -7,17 +7,17 @@ export default function About() {
   const { t, tHtml } = useLanguage();
 
   return (
-    <section id="about" className="text-center py-[60px]">
+    <section id="about" className="text-center section-padding">
       <div className="container">
         <ScrollReveal>
-          <div className="text-xs font-semibold tracking-[3px] uppercase text-gold mb-4">
+          <div className="text-xs font-semibold tracking-[3px] uppercase text-gold mb-5">
             {t("about-label", "THE VIBE")}
           </div>
-          <h2 className="font-heading text-[clamp(2rem,5vw,2.75rem)] font-semibold leading-[1.2] mb-6">
+          <h2 className="font-heading text-[32px] md:text-[48px] uppercase leading-[1.05] mb-8">
             {t("about-heading", "Artistry Meets Precision")}
           </h2>
           <p
-            className="max-w-[620px] mx-auto text-muted-foreground text-[1.05rem] leading-[1.8] [&>strong]:text-foreground [&>strong]:font-medium"
+            className="max-w-[700px] mx-auto text-muted-foreground text-[1.1rem] leading-[1.8] [&>strong]:text-foreground [&>strong]:font-medium"
             dangerouslySetInnerHTML={{
               __html: tHtml(
                 "about-text",

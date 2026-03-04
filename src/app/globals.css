@@ -15,12 +15,12 @@
   --color-gold-dim: var(--gold-dim);
   --color-border: var(--border);
 
-  --font-heading: var(--font-playfair);
+  --font-heading: var(--font-bebas);
   --font-body: var(--font-outfit);
 
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 12px;
+  --radius-md: 16px;
+  --radius-lg: 16px;
 
   --animate-fade-up: fade-up 0.8s ease forwards;
   --animate-loader-fill: loader-fill 1.2s ease forwards;
@@ -45,16 +45,16 @@
 }
 
 :root {
-  --background: #0B0B0B;
-  --foreground: #F2F0EB;
-  --card: #111111;
-  --card-foreground: #F2F0EB;
+  --background: #0A0A0A;
+  --foreground: #FFFFFF;
+  --card: #141414;
+  --card-foreground: #FFFFFF;
   --muted: #1a1a1a;
-  --muted-foreground: #807E78;
-  --gold: #C9A96E;
-  --gold-dim: rgba(201, 169, 110, 0.15);
-  --border: rgba(255, 255, 255, 0.05);
-  --radius: 12px;
+  --muted-foreground: #888888;
+  --gold: #D4AF37;
+  --gold-dim: rgba(212, 175, 55, 0.15);
+  --border: rgba(255, 255, 255, 0.06);
+  --radius: 16px;
 }
 
 * {
@@ -71,7 +71,8 @@ body {
   font-family: var(--font-body), -apple-system, sans-serif;
   background: var(--background);
   color: var(--foreground);
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -85,10 +86,23 @@ section[id] {
   scroll-margin-top: 80px;
 }
 
+/* Section spacing */
+.section-padding {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
 /* Reveal animation */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
@@ -110,7 +124,7 @@ section[id] {
   left: -10%;
   right: -10%;
   bottom: -20%;
-  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.04) 0%, transparent 60%);
   pointer-events: none;
   will-change: transform;
   z-index: 0;
@@ -124,7 +138,7 @@ section[id] {
 
 /* Container utility */
 .container {
-  max-width: 1140px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
