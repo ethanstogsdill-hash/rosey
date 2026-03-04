@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-gold: var(--gold);
+  --color-gold-dim: var(--gold-dim);
+  --color-border: var(--border);
+
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-outfit);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 12px;
+
+  --animate-fade-up: fade-up 0.8s ease forwards;
+  --animate-loader-fill: loader-fill 1.2s ease forwards;
+  --animate-pulse-line: pulse-line 2s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loader-fill {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+:root {
+  --background: #0B0B0B;
+  --foreground: #F2F0EB;
+  --card: #111111;
+  --card-foreground: #F2F0EB;
+  --muted: #1a1a1a;
+  --muted-foreground: #807E78;
+  --gold: #C9A96E;
+  --gold-dim: rgba(201, 169, 110, 0.15);
+  --border: rgba(255, 255, 255, 0.05);
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body), -apple-system, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Parallax backgrounds */
+.parallax-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-section::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  right: -10%;
+  bottom: -20%;
+  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  will-change: transform;
+  z-index: 0;
+  transform: translateY(var(--parallax-y, 0));
+}
+
+.parallax-section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Container utility */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
